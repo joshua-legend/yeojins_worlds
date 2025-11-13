@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎤 국비지원 풀스택 월드 🎶
 
-## Getting Started
+안녕하세요! 여긴 **여진스월드** — 국비지원, 풀스택, 그리고 개발자 소울이 모두 모인 곳!  
+Next.js 기반의 멀티버스 커뮤니티이자, 여진스팀이 직접 부른 오리지널 풀스택 송이 흐르는 공간이에요.  
+함께 소통하며 성장하고, 코드와 음악이 어우러진 개발 LIFE를 즐겨봐요! 🚀✨
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌟 월드 주요 기능
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 🥁 **Next.js SSR/CSR 하이브리드**: 최첨단 웹 기술은 기본!
+- 📝 **닉네임 관리**: 나만의 멋진 개발 닉네임 설정 및 빠른 갱신
+- ⚡ **실시간 포스트**: 게시글을 즉시 업로드 & 확인
+- 🗂️ **커스텀 탭 UI**: 원하는 컨텐츠를 한눈에!
+- 🎼 **여진스 오리지널 송 내장**: 뮤직플레이어+가사 싱크, 풀스택 개발자 응원송 (함께 따라 불러요!)
+- 🌚🌞 **다크/라이트 모드**: 당신의 눈도 소중하니까!
+- 📱 **모바일 퍼스트, 반응형 디자인**
+- 🛠️ **Vercel, Bun 등 다양한 환경 지원**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 시작하기 (부트업 가이드)
 
-## Learn More
+1. 의존성 설치
+   ```bash
+   npm install  # 또는 yarn, pnpm, bun install
+   ```
+2. 개발 서버 부트업 🎬
+   ```bash
+   npm run dev  # 또는 yarn dev, pnpm dev, bun dev
+   ```
+3. 브라우저에서 [http://localhost:3000](http://localhost:3000) 접속,  
+   💡 음악과 코드의 세계가 펼쳐집니다!
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🗂️ 폴더/코드 MAP
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `app/page.jsx`  
+  메인 스테이지! 전체 UI/로직 집약
+- `components/common/MusicPlayer.jsx`  
+  ✨ 여진스송 플레이/가사 싱크 in real time
+- `components/user/NicknameSetup.jsx`  
+  닉네임 셋업 & 편집 창구
+- `components/tab/TabBar.jsx`, `components/tab/TabContent.jsx`  
+  탭 탐색, 콘텐츠 관리
+- `store/`  
+  전체 상태를 조율하는 글로벌 콘솔(Zustand)
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 💡 우리만의 커스텀 포인트
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 🎶 **여진스 오리지널 풀스택 송** 내장! 플레이어에서 직접 감상+싱크 가사
+- 최신 React/Next.js 컨셉 가득 (use client, dynamic import 등)
+- 스택이 바뀌어도 끄떡없는 확장성 & 진짜 개발자 감성
+
+---
+
+## 🤝 커뮤니티・문의 (동료 개발자 환영!)
+
+이슈, PR, 질문 무엇이든 OK!  
+**"옆자리 동기처럼"** 자유롭게 의견 나눠주세요.  
+같이 성장하는 코드, 그리고 음악의 월드에서 만나요! 🌍
+
+---
+
+## 📄 LICENSE
+
+MIT License  
+_함께라서 더 강한, 여진스월드!_
