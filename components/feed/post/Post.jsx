@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNicknameStore } from "@/store/useNicknameStore";
 import { fetchComments as fetchCommentsApi, createComment } from "@/api/commentApi";
 import PostHeader from "./PostHeader";
@@ -11,16 +11,34 @@ import CommentSection from "../comment/CommentSection";
 export default function Post({ post }) {
   const currentNickname = useNicknameStore((state) => state.currentNickname);
   const [comments, setComments] = useState([]);
+  const [commentCount, setCommentCount] = useState(post?.commentCount ?? 0);
   const [commentContent, setCommentContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showComments, setShowComments] = useState(false);
+
+  // 컴포넌트 마운트 시 댓글 개수 가져오기
+  useEffect(() => {
+    const loadCommentCount = async () => {
+      if (!post?.id) return;
+      // 서버에서 commentCount가 제공되지 않은 경우에만 API 호출
+      if (post.commentCount === undefined) {
+        const result = await fetchCommentsApi(post.id);
+        if (result.success && Array.isArray(result.data)) {
+          setCommentCount(result.data.length);
+        }
+      }
+    };
+    loadCommentCount();
+  }, [post?.id, post?.commentCount]);
 
   // 댓글 불러오기
   const handleFetchComments = async () => {
     if (!post?.id) return;
     const result = await fetchCommentsApi(post.id);
     if (result.success) {
-      setComments(result.data);
+      const fetchedComments = Array.isArray(result.data) ? result.data : [];
+      setComments(fetchedComments);
+      setCommentCount(fetchedComments.length);
     }
   };
 
@@ -32,7 +50,15 @@ export default function Post({ post }) {
     setIsLoading(true);
     const result = await createComment(post.id, currentNickname, commentContent);
     if (result.success) {
-      setComments([...comments, result.data]);
+      // 서버 응답에 필수 필드가 없는 경우 클라이언트 데이터로 보완
+      const commentWithData = {
+        ...result.data,
+        author: result.data.author || currentNickname,
+        content: result.data.content || commentContent,
+        createdAt: result.data.createdAt || new Date().toISOString(),
+      };
+      setComments([...comments, commentWithData]);
+      setCommentCount((prev) => prev + 1);
       setCommentContent("");
     }
     setIsLoading(false);
@@ -62,7 +88,7 @@ export default function Post({ post }) {
         <div className="flex-1 min-w-0">
           <PostHeader author={post?.author || "익명"} createdAt={post?.createdAt} />
           <PostContent content={post?.content || ""} />
-          <CommentButton commentCount={comments.length} onClick={handleToggleComments} />
+          <CommentButton commentCount={commentCount} onClick={handleToggleComments} />
           <CommentSection
             showComments={showComments}
             comments={comments}

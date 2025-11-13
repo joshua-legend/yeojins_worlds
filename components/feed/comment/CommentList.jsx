@@ -11,10 +11,9 @@ export default function CommentList({ comments }) {
 
   return (
     <div className="space-y-3">
-      {comments.map((comment) => (
-        <CommentItem key={comment.id} comment={comment} />
+      {comments.map((comment, index) => (
+        <CommentItem key={index} comment={comment} />
       ))}
     </div>
   );
 }
-
