@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE_URL = "http://localhost:3000";
 
 export const usePostStore = create((set, get) => ({
   posts: [],
@@ -18,7 +18,13 @@ export const usePostStore = create((set, get) => ({
       const response = await fetch(`${API_BASE_URL}/feeds`);
       if (response.ok) {
         const data = await response.json();
-        set({ posts: data, isLoadingPosts: false });
+        // createdAt 기준으로 최신순 정렬 (내림차순)
+        const sortedPosts = [...data].sort((a, b) => {
+          const dateA = new Date(a.createdAt || 0);
+          const dateB = new Date(b.createdAt || 0);
+          return dateB - dateA; // 최신이 위로
+        });
+        set({ posts: sortedPosts, isLoadingPosts: false });
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -46,11 +52,26 @@ export const usePostStore = create((set, get) => ({
 
       if (response.ok) {
         const newPost = await response.json();
-        set((state) => ({
-          posts: [newPost, ...state.posts],
-          postContent: "",
-          isLoading: false,
-        }));
+        // 서버 응답에 필수 필드가 없는 경우 클라이언트 데이터로 보완
+        const postWithData = {
+          ...newPost,
+          author: newPost.author || currentNickname,
+          content: newPost.content || postContent,
+          createdAt: newPost.createdAt || new Date().toISOString(),
+        };
+        set((state) => {
+          // 새 게시글을 추가하고 최신순 정렬 유지
+          const updatedPosts = [postWithData, ...state.posts].sort((a, b) => {
+            const dateA = new Date(a.createdAt || 0);
+            const dateB = new Date(b.createdAt || 0);
+            return dateB - dateA; // 최신이 위로
+          });
+          return {
+            posts: updatedPosts,
+            postContent: "",
+            isLoading: false,
+          };
+        });
         // 피드 작성 후 피드보기 탭으로 전환
         const { useTabStore } = await import("./useTabStore");
         useTabStore.getState().setActiveTab("feed");

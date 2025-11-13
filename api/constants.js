@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+export const API_BASE_URL = "http://localhost:3000";
 
 export const API_ENDPOINTS = {
   FEEDS: "/feeds",
@@ -6,4 +6,3 @@ export const API_ENDPOINTS = {
   COMMENTS: (feedId) => `/feeds/${feedId}/comments`,
   COMMENT_BY_ID: (commentId) => `/comments/${commentId}`,
 };
-

@@ -17,6 +17,7 @@ export default function Post({ post }) {
 
   // 댓글 불러오기
   const handleFetchComments = async () => {
+    if (!post?.id) return;
     const result = await fetchCommentsApi(post.id);
     if (result.success) {
       setComments(result.data);
@@ -26,7 +27,7 @@ export default function Post({ post }) {
   // 댓글 작성
   const handleSubmitComment = async (e) => {
     e.preventDefault();
-    if (!commentContent.trim() || !currentNickname) return;
+    if (!commentContent.trim() || !currentNickname || !post?.id) return;
 
     setIsLoading(true);
     const result = await createComment(post.id, currentNickname, commentContent);
@@ -44,15 +45,23 @@ export default function Post({ post }) {
     setShowComments(!showComments);
   };
 
+  // author의 첫 글자를 안전하게 가져오기
+  const getAuthorInitial = () => {
+    if (post?.author && typeof post.author === "string" && post.author.length > 0) {
+      return post.author.charAt(0).toUpperCase();
+    }
+    return "?";
+  };
+
   return (
     <div className="border-b border-gray-200 dark:border-gray-800 p-4 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
       <div className="flex gap-3">
         <div className="shrink-0">
-          <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-lg">{post.author.charAt(0).toUpperCase()}</div>
+          <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-lg">{getAuthorInitial()}</div>
         </div>
         <div className="flex-1 min-w-0">
-          <PostHeader author={post.author} createdAt={post.createdAt} />
-          <PostContent content={post.content} />
+          <PostHeader author={post?.author || "익명"} createdAt={post?.createdAt} />
+          <PostContent content={post?.content || ""} />
           <CommentButton commentCount={comments.length} onClick={handleToggleComments} />
           <CommentSection
             showComments={showComments}
